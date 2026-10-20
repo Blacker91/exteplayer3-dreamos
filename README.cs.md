@@ -6,6 +6,13 @@ Statický build [exteplayer3](https://github.com/skyjet18/exteplayer3) (skyjet18
 ffmpeg pro Dreamboxy s **DreamOS 2.5**. Používá ho
 [ServiceApp pro DreamOS](https://github.com/Blacker91/serviceapp-dreamos) a ArchivCZSK.
 
+## ⚠️ Upozornění
+- **Vše zkoušíš na vlastní nebezpečí.** Před instalací si **udělej zálohu image**.
+- Instaluj pouze na **enigma2 4.3.3r3** (DreamOS 2.5, poslední vydaná unstable verze),
+  na které jsme to zkoušeli. Verzi zjistíš na boxu příkazem `dpkg -l enigma2`.
+- Vyzkoušeno na DM520. Build pro DM900/DM920 je ověřený proti stejné verzi
+  enigma2, ale na boxu zatím vyzkoušený nebyl.
+
 | Box | Architektura |
 |---|---|
 | DM520, DM525 | mipsel |
