@@ -40,3 +40,7 @@ When ArchivCZSK offers to download a newer exteplayer3, answer **No**, it would 
 See [patches](patches) and [CHANGELOG.md](CHANGELOG.md). In short: options after the URL
 work with musl, separate audio and DRM keys, MP2 sound, sound of live streams,
 H.264 picture breakup with TV recordings.
+
+## Contact
+Bugs and suggestions: [Issues](https://github.com/Blacker91/exteplayer3-dreamos/issues) or e-mail
+**dreamosserviceapp@gmail.com**.
