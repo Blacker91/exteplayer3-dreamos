@@ -1,5 +1,12 @@
 # Changelog
 
+## exteplayer3 183-dreamos9
+- One package `exteplayer3-dreamos` with exteplayer3 and ffmpeg
+  (`/usr/lib/exteplayer3_deps/ffmpeg`), like the skyjet18 package.
+  It replaces `ffmpeg-exteplayer3-dreamos`.
+- Separate packages for mipsel and armhf. Files are no longer moved by
+  postinst, so dpkg knows all files of the package.
+
 ## exteplayer3 183-dreamos8
 - H.264: ignore corrupt NAL lengths when looking for in-band SPS/PPS.
 

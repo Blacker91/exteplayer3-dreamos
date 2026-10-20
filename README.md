@@ -21,18 +21,20 @@ ffmpeg for Dreamboxes with **DreamOS 2.5**. Used by
 Statically linked (musl), so it does not depend on the libraries of the image.
 FFmpeg 6.1 (skyjet18 patches: DASH, CENC DRM), OpenSSL 3, libxml2.
 
-## Packages
-- `exteplayer3-dreamos` → `/usr/bin/exteplayer3`
-- `ffmpeg-exteplayer3-dreamos` → `/usr/lib/exteplayer3_deps/ffmpeg` (for ArchivCZSK, the system ffmpeg is not touched)
+## Package
+One package `exteplayer3-dreamos`, separate for mipsel and armhf:
+- `/usr/bin/exteplayer3`
+- `/usr/lib/exteplayer3_deps/ffmpeg` (for ArchivCZSK, the system ffmpeg is not touched)
 
-Both work on all supported boxes, the right binary is installed automatically.
+It replaces the former separate package `ffmpeg-exteplayer3-dreamos`, which is removed automatically.
 
 ## Install
 Together with ServiceApp (recommended), on the box:
 ```sh
 curl -fsSL https://raw.githubusercontent.com/Blacker91/serviceapp-dreamos/dreamos/installer.sh | sh
 ```
-Or download the `.deb` files from [Releases](https://github.com/Blacker91/exteplayer3-dreamos/releases) and run `dpkg -i *.deb`.
+Or download the `.deb` for your box from [Releases](https://github.com/Blacker91/exteplayer3-dreamos/releases)
+(`_mipsel` for DM520/DM525, `_armhf` for DM900/DM920) and run `dpkg -i exteplayer3-dreamos_*.deb`.
 
 When ArchivCZSK offers to download a newer exteplayer3, answer **No**, it would replace this build.
 
