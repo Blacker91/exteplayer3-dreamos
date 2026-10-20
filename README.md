@@ -30,7 +30,7 @@ Both work on all supported boxes, the right binary is installed automatically.
 ## Install
 Together with ServiceApp (recommended), on the box:
 ```sh
-wget -qO- https://raw.githubusercontent.com/Blacker91/serviceapp-dreamos/dreamos/installer.sh | sh
+curl -fsSL https://raw.githubusercontent.com/Blacker91/serviceapp-dreamos/dreamos/installer.sh | sh
 ```
 Or download the `.deb` files from [Releases](https://github.com/Blacker91/exteplayer3-dreamos/releases) and run `dpkg -i *.deb`.
 

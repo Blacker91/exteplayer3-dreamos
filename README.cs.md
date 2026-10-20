@@ -30,7 +30,7 @@ Oba fungují na všech podporovaných boxech, správná binárka se vybere sama.
 ## Instalace
 Spolu se ServiceApp (doporučeno), na boxu:
 ```sh
-wget -qO- https://raw.githubusercontent.com/Blacker91/serviceapp-dreamos/dreamos/installer.sh | sh
+curl -fsSL https://raw.githubusercontent.com/Blacker91/serviceapp-dreamos/dreamos/installer.sh | sh
 ```
 Nebo stáhni `.deb` z [Releases](https://github.com/Blacker91/exteplayer3-dreamos/releases) a spusť `dpkg -i *.deb`.
 
