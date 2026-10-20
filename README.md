@@ -40,18 +40,3 @@ When ArchivCZSK offers to download a newer exteplayer3, answer **No**, it would 
 See [patches](patches) and [CHANGELOG.md](CHANGELOG.md). In short: options after the URL
 work with musl, separate audio and DRM keys, MP2 sound, sound of live streams,
 H.264 picture breakup with TV recordings.
-
-## Build
-On Debian/Ubuntu:
-```sh
-sudo apt install git make cmake pkg-config python3-pip file
-pip install ziglang==0.17.0
-./build.sh mipsel
-./build.sh arm
-./package.sh
-```
-
-## License
-The `exteplayer3` binary: GPLv3 ([LICENSE](LICENSE)). It contains exteplayer3 (GPLv2 or later),
-FFmpeg (LGPLv3), OpenSSL (Apache 2.0), libxml2 (MIT) and zlib, see [SOURCES.md](SOURCES.md)
-and [licenses](licenses). Thanks to skyjet18 for exteplayer3 and the FFmpeg patches.

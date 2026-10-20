@@ -40,18 +40,3 @@ Když ArchivCZSK nabídne stažení novějšího exteplayer3, odpověz **Ne**, j
 Viz [patches](patches) a [CHANGELOG.md](CHANGELOG.md). Stručně: volby za adresou fungují
 i s musl, oddělený zvuk a klíče DRM, zvuk MP2, zvuk živých streamů, rozpad obrazu
 H.264 u TV záznamů.
-
-## Kompilace
-Na Debianu/Ubuntu:
-```sh
-sudo apt install git make cmake pkg-config python3-pip file
-pip install ziglang==0.17.0
-./build.sh mipsel
-./build.sh arm
-./package.sh
-```
-
-## Licence
-Binárka `exteplayer3`: GPLv3 ([LICENSE](LICENSE)). Obsahuje exteplayer3 (GPLv2 nebo novější),
-FFmpeg (LGPLv3), OpenSSL (Apache 2.0), libxml2 (MIT) a zlib, viz [SOURCES.md](SOURCES.md)
-a [licenses](licenses). Díky skyjet18 za exteplayer3 a úpravy FFmpeg.
