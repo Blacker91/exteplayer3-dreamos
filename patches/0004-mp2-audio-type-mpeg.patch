@@ -1,0 +1,16 @@
+MP2 audio: use AUDIOTYPE_MPEG (1) like enigma2 live TV.
+Dreambox gives no sound for MP2 sent as type 0xA (MP3).
+
+diff --git a/output/writer/mipsel/mp3.c b/output/writer/mipsel/mp3.c
+index 27b0d79..ea1b37a 100755
+--- a/output/writer/mipsel/mp3.c
++++ b/output/writer/mipsel/mp3.c
+@@ -134,7 +134,7 @@ static WriterCaps_t caps_mpegl3 = {
+     eAudio,
+     "A_MPEG/L3",
+     AUDIO_ENCODING_MPEG2,
+-    AUDIOTYPE_MP3,
++    AUDIOTYPE_MPEG, /* MP2: Dreambox does not play it as 0xA (MP3) */
+     -1
+ };
+ 

@@ -1,0 +1,29 @@
+H.264/H.265: allow up to 1024 iovecs per frame (TV streams can have
+more than 63 slices per frame, the rest was dropped).
+
+diff --git a/output/writer/mipsel/h264.c b/output/writer/mipsel/h264.c
+index b9fc178..0cbf82e 100755
+--- a/output/writer/mipsel/h264.c
++++ b/output/writer/mipsel/h264.c
+@@ -56,7 +56,7 @@
+ /* ***************************** */
+ /* Makros/Constants              */
+ /* ***************************** */
+-#define IOVEC_SIZE                                      128
++#define IOVEC_SIZE 1024
+ 
+ /* ***************************** */
+ /* Types                         */
+diff --git a/output/writer/mipsel/h265.c b/output/writer/mipsel/h265.c
+index 0d7cfbe..5fbd986 100755
+--- a/output/writer/mipsel/h265.c
++++ b/output/writer/mipsel/h265.c
+@@ -55,7 +55,7 @@
+ /* ***************************** */
+ /* Makros/Constants              */
+ /* ***************************** */
+-#define IOVEC_SIZE                                      128
++#define IOVEC_SIZE 1024
+ 
+ /* ***************************** */
+ /* Types                         */
