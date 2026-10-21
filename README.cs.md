@@ -41,7 +41,7 @@ Když ArchivCZSK nabídne stažení novějšího exteplayer3, odpověz **Ne**, j
 ## Změny proti skyjet18
 Viz [patches](patches) a [CHANGELOG.md](CHANGELOG.md). Stručně: volby za adresou fungují
 i s musl, oddělený zvuk a klíče DRM, zvuk MP2, zvuk živých streamů, rozpad obrazu
-H.264 u TV záznamů.
+H.264 u TV záznamů, rozpad obrazu 4K VP9 (YouTube) na DM900.
 
 ## Kontakt
 Chyby a návrhy: [Issues](https://github.com/Blacker91/exteplayer3-dreamos/issues) nebo e-mail

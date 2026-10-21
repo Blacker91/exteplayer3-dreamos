@@ -1,5 +1,9 @@
 # Changelog
 
+## exteplayer3 183-dreamos10
+- VP9 on Dreambox (4K YouTube on DM900): picture breakup. Large frames are
+  now sent in 32 kB PES chunks like on other Broadcom boxes.
+
 ## exteplayer3 183-dreamos9
 - One package `exteplayer3-dreamos` with exteplayer3 and ffmpeg
   (`/usr/lib/exteplayer3_deps/ffmpeg`), like the skyjet18 package.
