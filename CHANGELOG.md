@@ -1,5 +1,11 @@
 # Changelog
 
+## exteplayer3 183-dreamos11
+- Live streams (Tvheadend): sometimes no sound after switching channels. The
+  audio buffer is now watched during playback too; when audio would come too
+  late, the picture is held briefly (about 1 s) until audio is buffered again.
+  EP3_LIVE_SYNC_WATCH=0 disables it.
+
 ## exteplayer3 183-dreamos10
 - VP9 on Dreambox (4K YouTube on DM900): picture breakup. Large frames are
   now sent in 32 kB PES chunks like on other Broadcom boxes.
