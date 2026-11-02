@@ -1,5 +1,10 @@
 # Changelog
 
+## exteplayer3 184-dreamos2
+- Live streams (Tvheadend): faster zapping, the start hold is the measured
+  audio gap + 400 ms (was + 800 ms) and at most 3 s (was 5 s). The audio
+  watch fixes it during playback if needed. EP3_LIVE_SYNC_MARGIN=ms sets it.
+
 ## exteplayer3 184-dreamos1
 - Based on skyjet18 exteplayer3 184:
   - H.264: all SPS/PPS from avcC are passed to the decoder, not only the first
