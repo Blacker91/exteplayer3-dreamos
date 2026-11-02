@@ -1,5 +1,9 @@
 # Changelog
 
+## exteplayer3 184-dreamos3
+- Graphic subtitles (PGS from Blu-ray rips, DVB, XSUB): built-in PNG writer.
+  The static build could not load exteplayer3png.so, so they never worked.
+
 ## exteplayer3 184-dreamos2
 - Live streams (Tvheadend): faster zapping, the start hold is the measured
   audio gap + 400 ms (was + 800 ms) and at most 3 s (was 5 s). The audio

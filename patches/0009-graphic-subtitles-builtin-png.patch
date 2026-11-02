@@ -1,0 +1,160 @@
+Graphic subtitles: built-in PNG writer.
+The static build cannot dlopen() exteplayer3png.so, so PGS/DVB/XSUB frames
+were never written. Write them here with zlib.
+
+--- a/external/plugins/src/png.c
++++ b/external/plugins/src/png.c
+@@ -1,79 +1,94 @@
+ /*
+- * Subtitle output to one registered client.
+- *
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
++ * PNG writer for graphic subtitles (PGS, DVB, XSUB).
+  *
++ * The static DreamOS build cannot dlopen() exteplayer3png.so, so the RGBA
++ * frames are written here with zlib (already linked in for FFmpeg).
+  */
+ 
+-/* ***************************** */
+-/* Includes                      */
+-/* ***************************** */
+ #include <stdio.h>
+-#include <dlfcn.h>
++#include <stdint.h>
++#include <stdlib.h>
++#include <string.h>
++#include <zlib.h>
+ #include "plugins/png.h"
+-#include "debug.h"
+-
+-static void *handle;
+-int (*SaveRGBAImage_handle)(const char *filename, const unsigned char *data, int width, int height);
+ 
++static void put32(unsigned char *p, uint32_t v)
++{
++    p[0] = v >> 24; p[1] = v >> 16; p[2] = v >> 8; p[3] = v;
++}
+ 
+-int PNGPlugin_saveRGBAImage(const char *filename, const unsigned char *data, int width, int height)
++static int write_chunk(FILE *f, const char *type, const unsigned char *data, uint32_t len)
+ {
+-    if (SaveRGBAImage_handle != NULL)
+-        return SaveRGBAImage_handle(filename, data, width, height);
+-    return -1;
++    unsigned char hdr[8];
++    put32(hdr, len);
++    memcpy(hdr + 4, type, 4);
++    uLong crc = crc32(0L, (const Bytef *)type, 4);
++    if (len)
++        crc = crc32(crc, data, len);
++    unsigned char c[4];
++    put32(c, (uint32_t)crc);
++    return (fwrite(hdr, 1, 8, f) == 8 && (!len || fwrite(data, 1, len, f) == len) && fwrite(c, 1, 4, f) == 4) ? 0 : -1;
+ }
+ 
+-int PNGPlugin_init(void)
++int PNGPlugin_saveRGBAImage(const char *filename, const unsigned char *data, int width, int height)
+ {
+-    if (NULL != handle)
+-        return 0; /* Already initialized */
+-    else
++    if (!filename || !data || width <= 0 || height <= 0)
++        return -1;
++    size_t stride = (size_t)width * 4;
++    size_t rawlen = (stride + 1) * (size_t)height;
++    unsigned char *raw = malloc(rawlen);
++    if (!raw)
++        return -1;
++    int y;
++    for (y = 0; y < height; y++)
+     {
+-        handle = dlopen("exteplayer3png.so", RTLD_LAZY);
+-        if (handle)
+-        {
+-            char *error = NULL;
+-
+-            dlerror();    /* Clear any existing error */
+-
+-            *(void **) (&SaveRGBAImage_handle) = dlsym(handle, "SaveRGBAImage");
+-
+-            if ((error = dlerror()) != NULL)
+-            {
+-                dlclose(handle);
+-                plugin_err("%s\n", error);
+-                return -2;
+-            }
+-            return 0;
+-        }
+-        plugin_err( "%s\n", dlerror());
++        raw[y * (stride + 1)] = 0; /* filter: none */
++        memcpy(raw + y * (stride + 1) + 1, data + y * stride, stride);
+     }
++    uLongf zlen = compressBound(rawlen);
++    unsigned char *z = malloc(zlen);
++    if (!z || compress2(z, &zlen, raw, rawlen, 6) != Z_OK)
++    {
++        free(raw);
++        free(z);
++        return -1;
++    }
++    free(raw);
++
++    int ret = -1;
++    char tmp[4096];
++    snprintf(tmp, sizeof(tmp), "%s.part", filename);
++    FILE *f = fopen(tmp, "wb");
++    if (f)
++    {
++        static const unsigned char sig[8] = {0x89, 'P', 'N', 'G', '\r', '\n', 0x1a, '\n'};
++        unsigned char ihdr[13];
++        put32(ihdr, width);
++        put32(ihdr + 4, height);
++        ihdr[8] = 8;  /* bit depth */
++        ihdr[9] = 6;  /* RGBA */
++        ihdr[10] = ihdr[11] = ihdr[12] = 0;
++        if (fwrite(sig, 1, 8, f) == 8 && !write_chunk(f, "IHDR", ihdr, 13) &&
++            !write_chunk(f, "IDAT", z, zlen) && !write_chunk(f, "IEND", NULL, 0))
++            ret = 0;
++        if (fclose(f) != 0)
++            ret = -1;
++        /* rename at the end: a reader never sees a half written file */
++        if (ret == 0 && rename(tmp, filename) != 0)
++            ret = -1;
++        if (ret != 0)
++            remove(tmp);
++    }
++    free(z);
++    return ret;
++}
+ 
+-    return -1;
++int PNGPlugin_init(void)
++{
++    return 0;
+ }
+ 
+ int PNGPlugin_term(void)
+ {
+-    if (handle)
+-    {
+-        dlclose(handle);
+-        handle = NULL;
+-        SaveRGBAImage_handle = NULL;
+-        return 0;
+-    }
+-    return -1;
++    return 0;
+ }
