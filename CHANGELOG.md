@@ -1,5 +1,14 @@
 # Changelog
 
+## exteplayer3 184-dreamos1
+- Based on skyjet18 exteplayer3 184:
+  - H.264: all SPS/PPS from avcC are passed to the decoder, not only the first
+    (live DASH services with a second PPS: picture broke into blocks at
+    flashes and fades on Broadcom boxes).
+  - X-DRM-Api-Level header for ArchivCZSK is no longer glued to headers
+    passed with -h.
+- All DreamOS patches unchanged.
+
 ## exteplayer3 183-dreamos11
 - Live streams (Tvheadend): sometimes no sound after switching channels. The
   audio buffer is now watched during playback too; when audio would come too

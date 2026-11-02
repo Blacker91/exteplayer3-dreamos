@@ -28,7 +28,7 @@ FFMPEG_REPO=https://github.com/skyjet18/FFmpeg.git
 FFMPEG_BRANCH=release/6.1-patched
 FFMPEG_REV=ea4d5204424fa53de15dbc2781424af7223b3bb9
 EP3_REPO=https://github.com/skyjet18/exteplayer3.git
-EP3_REV=00aaa894db78a5c71c325d7cab1ea9ba5855024d
+EP3_REV=cda720ec894f42ecec19dbe8d307750bf248015e
 
 EP3_SRCS="main/exteplayer.c container/container.c container/container_ffmpeg.c manager/manager.c manager/audio.c
  manager/video.c manager/subtitle.c output/output_subtitle.c output/output.c output/writer/common/pes.c
@@ -150,8 +150,8 @@ step_exteplayer3() {
   local b="$W/build-exteplayer3"; rm -rf "$b"; mkdir -p "$b"
   cat > "$b/config.h" <<'EOF'
 #define PACKAGE_NAME "exteplayer3"
-#define PACKAGE_VERSION "183-static"
-#define VERSION "183-static"
+#define PACKAGE_VERSION "184-static"
+#define VERSION "184-static"
 #define HAVE_FLV2MPEG4_CONVERTER 1
 #ifndef _FILE_OFFSET_BITS
 #define _FILE_OFFSET_BITS 64
