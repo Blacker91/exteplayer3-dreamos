@@ -2,6 +2,8 @@
 # Static exteplayer3 + ffmpeg for Dreamboxes with DreamOS 2.5
 #   ./build.sh mipsel      DM520 / DM525
 #   ./build.sh arm         DM900 / DM920
+#   ./build.sh cortexa7    ARMv7 without NEON (VFPv4-D16), e.g. Zgemma H8.2H
+#                          (HiSilicon Hi3716MV430, OpenPLi tune cortexa7hf)
 #   ./build.sh arm ffmpeg exteplayer3      only some steps
 #
 # Static musl build (Zig), so nothing depends on the libraries of the image.
@@ -13,7 +15,8 @@ ARCH="${1:-mipsel}"; shift || true
 case "$ARCH" in
   mipsel) ZIG_TARGET=mipsel-linux-musleabihf; ZIG_CPU=mips32;     OSSL_TARGET=linux-mips32; FF_ARCH=mips; CMAKE_PROC=mips ;;
   arm)    ZIG_TARGET=arm-linux-musleabihf;    ZIG_CPU=cortex_a15; OSSL_TARGET=linux-armv4;  FF_ARCH=arm;  CMAKE_PROC=arm ;;
-  *) echo "usage: $0 mipsel|arm [step...]" >&2; exit 1 ;;
+  cortexa7) ZIG_TARGET=arm-linux-musleabihf;  ZIG_CPU=cortex_a7-neon-d32; OSSL_TARGET=linux-armv4; FF_ARCH=arm; CMAKE_PROC=arm ;;
+  *) echo "usage: $0 mipsel|arm|cortexa7 [step...]" >&2; exit 1 ;;
 esac
 W="${WORK:-$ROOT/.work}/$ARCH"
 TC="$W/tc"; SRC="$W/src"; PREFIX="$W/prefix"; OUT="$W/out"
