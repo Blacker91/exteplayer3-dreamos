@@ -29,9 +29,9 @@ OPENSSL_TAG=openssl-3.5.4
 LIBXML2_TAG=v2.13.8
 FFMPEG_REPO=https://github.com/skyjet18/FFmpeg.git
 FFMPEG_BRANCH=release/6.1-patched
-FFMPEG_REV=ea4d5204424fa53de15dbc2781424af7223b3bb9
+FFMPEG_REV=0da0223cd1add40eabaad04e1ce609f05670a1de
 EP3_REPO=https://github.com/skyjet18/exteplayer3.git
-EP3_REV=cda720ec894f42ecec19dbe8d307750bf248015e
+EP3_REV=0e540a0bb8a525e45c93bc2f58cfd087cf5bc38f
 
 EP3_SRCS="main/exteplayer.c container/container.c container/container_ffmpeg.c manager/manager.c manager/audio.c
  manager/video.c manager/subtitle.c output/output_subtitle.c output/output.c output/writer/common/pes.c
@@ -41,7 +41,7 @@ EP3_SRCS="main/exteplayer.c container/container.c container/container_ffmpeg.c m
  output/writer/mipsel/dts.c output/writer/mipsel/amr.c output/writer/mipsel/h265.c output/writer/mipsel/h264.c
  output/writer/mipsel/mjpeg.c output/writer/mipsel/mpeg2.c output/writer/mipsel/mpeg4.c output/writer/mipsel/divx3.c
  output/writer/mipsel/vp.c output/writer/mipsel/wmv.c output/writer/mipsel/vc1.c playback/playback.c tools/debug.c
- tools/strbuffer.c external/ffmpeg/src/bitstream.c external/ffmpeg/src/latmenc.c external/ffmpeg/src/mpeg4audio.c
+ tools/strbuffer.c tools/pcm_export.c external/ffmpeg/src/bitstream.c external/ffmpeg/src/latmenc.c external/ffmpeg/src/mpeg4audio.c
  external/ffmpeg/src/xiph.c external/flv2mpeg4/src/m4vencode.c external/flv2mpeg4/src/flvdecoder.c
  external/flv2mpeg4/src/dcprediction.c external/flv2mpeg4/src/flv2mpeg4.c external/plugins/src/png.c"
 
@@ -153,8 +153,8 @@ step_exteplayer3() {
   local b="$W/build-exteplayer3"; rm -rf "$b"; mkdir -p "$b"
   cat > "$b/config.h" <<'EOF'
 #define PACKAGE_NAME "exteplayer3"
-#define PACKAGE_VERSION "184-static"
-#define VERSION "184-static"
+#define PACKAGE_VERSION "185-static"
+#define VERSION "185-static"
 #define HAVE_FLV2MPEG4_CONVERTER 1
 #ifndef _FILE_OFFSET_BITS
 #define _FILE_OFFSET_BITS 64

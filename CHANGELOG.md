@@ -1,5 +1,17 @@
 # Changelog
 
+## exteplayer3 185-dreamos1
+- Based on skyjet18 exteplayer3 185 and the matching FFmpeg 6.1-patched:
+  - skyjet merged all DreamOS fixes (musl fileno, 1024 iovecs, in-band
+    SPS/PPS, MP2 audio type, live start hold and audio watch, VP9 32 kB PES
+    on Dreambox); they are no longer separate patches here.
+  - Audio track switching keeps the position and timestamps (HLS, DASH,
+    mixed TS), transient network errors are retried for 10 s instead of
+    ending playback, busy decoder devices are retried, adaptive HLS/DASH
+    quality selection, PES PTS/DTS, optional PCM export (-K) and more
+    backports from VTi.
+- Remaining DreamOS patch: built-in PNG writer for graphic subtitles.
+
 ## exteplayer3 184-dreamos3
 - Graphic subtitles (PGS from Blu-ray rips, DVB, XSUB): built-in PNG writer.
   The static build could not load exteplayer3png.so, so they never worked.
