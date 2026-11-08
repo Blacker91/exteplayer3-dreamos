@@ -5,7 +5,7 @@ A source archive of each release is attached to the GitHub release.
 
 | Component | Source | Version | License |
 |---|---|---|---|
-| exteplayer3 | https://github.com/skyjet18/exteplayer3 | `0e540a0bb8a525e45c93bc2f58cfd087cf5bc38f` (185) + [patches](patches) | GPLv2 or later |
+| exteplayer3 | https://github.com/skyjet18/exteplayer3 | `3e87bef42b8d233ae11d0527548308b84a6d2a2b` (185) + [patches](patches) | GPLv2 or later |
 | FFmpeg | https://github.com/skyjet18/FFmpeg, branch `release/6.1-patched` | `0da0223cd1add40eabaad04e1ce609f05670a1de` | LGPLv3 (`--enable-version3`) |
 | OpenSSL | https://github.com/openssl/openssl | `openssl-3.5.4` | Apache 2.0 |
 | libxml2 | https://github.com/GNOME/libxml2 | `v2.13.8` | MIT |

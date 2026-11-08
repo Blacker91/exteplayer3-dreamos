@@ -31,7 +31,7 @@ FFMPEG_REPO=https://github.com/skyjet18/FFmpeg.git
 FFMPEG_BRANCH=release/6.1-patched
 FFMPEG_REV=0da0223cd1add40eabaad04e1ce609f05670a1de
 EP3_REPO=https://github.com/skyjet18/exteplayer3.git
-EP3_REV=0e540a0bb8a525e45c93bc2f58cfd087cf5bc38f
+EP3_REV=3e87bef42b8d233ae11d0527548308b84a6d2a2b
 
 EP3_SRCS="main/exteplayer.c container/container.c container/container_ffmpeg.c manager/manager.c manager/audio.c
  manager/video.c manager/subtitle.c output/output_subtitle.c output/output.c output/writer/common/pes.c

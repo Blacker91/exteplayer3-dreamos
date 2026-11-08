@@ -1,5 +1,11 @@
 # Changelog
 
+## exteplayer3 185-dreamos2
+- skyjet18 re-released 185 (3e87bef): the player now reports version 185
+  (185-dreamos1 still reported 184, so ArchivCZSK and ServiceApp showed 184).
+- Graphic subtitles PNG writer reworked: exteplayer3png.so is still used when
+  it can be loaded, the built-in writer is the fallback (same output here).
+
 ## exteplayer3 185-dreamos1
 - Based on skyjet18 exteplayer3 185 and the matching FFmpeg 6.1-patched:
   - skyjet merged all DreamOS fixes (musl fileno, 1024 iovecs, in-band
