@@ -156,6 +156,7 @@ step_exteplayer3() {
 #define PACKAGE_VERSION "185-static"
 #define VERSION "185-static"
 #define HAVE_FLV2MPEG4_CONVERTER 1
+#define EPLAYER3_PNG_ZLIB 1
 #ifndef _FILE_OFFSET_BITS
 #define _FILE_OFFSET_BITS 64
 #endif
