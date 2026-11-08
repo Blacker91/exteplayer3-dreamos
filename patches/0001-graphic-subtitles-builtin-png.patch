@@ -1,6 +1,6 @@
 Graphic subtitles: built-in PNG writer when exteplayer3png.so is missing.
-The static build cannot dlopen() exteplayer3png.so. Sent to skyjet18 as a
-pull request; EPLAYER3_PNG_ZLIB is set in config.h by build.sh.
+The static build cannot dlopen() exteplayer3png.so; the plugin is kept and
+the built-in writer is used as fallback. EPLAYER3_PNG_ZLIB is set by build.sh.
 
 diff --git a/external/plugins/src/png.c b/external/plugins/src/png.c
 index b0bdc17..f87bf77 100755
