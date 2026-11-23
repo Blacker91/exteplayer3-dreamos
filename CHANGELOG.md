@@ -1,11 +1,17 @@
 # Changelog
 
-## exteplayer3 187-dreamos1
+## exteplayer3 187-dreamos2
 - Based on skyjet18 exteplayer3 187 (1df1fdc) and FFmpeg 6.1-patched
   (ca1f67f, HLS subtitle segments loaded on demand).
-- No DreamOS patches any more: graphic subtitles (PGS, DVB, XSUB) are now
-  written with the PNG encoder of FFmpeg upstream, which the static build
-  already has. The binary is plain skyjet18 source, built statically.
+- Graphic subtitles (PGS, DVB, XSUB) are now written with the PNG encoder of
+  FFmpeg upstream, which the static build already has; our PNG patch is gone.
+- One new DreamOS fix (patches/0001): some films from Plex (HTTP) had no
+  picture from the start, only after a seek. Over HTTP FFmpeg can take the
+  start time from an audio stream (2 ms) while the first video keyframe is at
+  0 ms; exteplayer3 dropped that keyframe as "before the start", the decoder
+  got the HEVC parameter sets with the next frame, which it cannot decode,
+  and never started. The first keyframe up to 1 s before the start time is
+  now played at 0. (Also in 185.)
 - From skyjet18 (186-187), among others:
   - live start hold (Tvheadend) is on by default on Dreambox only;
   - DTS: lone core frames padded on all boxes except Dreambox, PTS dejitter;

@@ -39,10 +39,12 @@ Or download the `.deb` for your box from [Releases](https://github.com/Blacker91
 When ArchivCZSK offers to download a newer exteplayer3, answer **No**, it would replace this build.
 
 ## Changes against skyjet18
-None. Since 187 the binary is built from unmodified skyjet18 sources (all
-earlier DreamOS fixes were merged upstream); only the build is different:
-static musl, so it runs on DreamOS without the libraries of the image.
-See [SOURCES.md](SOURCES.md) and [CHANGELOG.md](CHANGELOG.md).
+Since 187 all earlier DreamOS fixes are merged upstream. One small fix is
+applied ([patches](patches)): the first video keyframe of a film that FFmpeg
+reports slightly before the start time (seen over HTTP from Plex) is played
+instead of dropped, otherwise such films have no picture until a seek. The
+build is static musl, so it runs on DreamOS without the libraries of the
+image. See [SOURCES.md](SOURCES.md) and [CHANGELOG.md](CHANGELOG.md).
 
 ## Contact
 Bugs and suggestions: [Issues](https://github.com/Blacker91/exteplayer3-dreamos/issues) or e-mail

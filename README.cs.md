@@ -39,8 +39,10 @@ Nebo stáhni z [Releases](https://github.com/Blacker91/exteplayer3-dreamos/relea
 Když ArchivCZSK nabídne stažení novějšího exteplayer3, odpověz **Ne**, jinak by tento build přepsal.
 
 ## Změny proti skyjet18
-Žádné. Od verze 187 se binárka staví z neupravených zdrojů skyjet18 (všechny
-dřívější opravy pro DreamOS jsou převzaté upstream); liší se jen build:
+Od verze 187 jsou všechny dřívější opravy pro DreamOS převzaté upstream.
+Navíc je jedna malá oprava ([patches](patches)): první klíčový snímek filmu,
+který FFmpeg hlásí kousek před začátkem (stává se přes HTTP z Plexu), se
+přehraje a nezahodí, jinak takový film nemá obraz až do posunu. Build je
 statický s musl, takže na DreamOS běží bez knihoven image.
 Viz [SOURCES.md](SOURCES.md) a [CHANGELOG.md](CHANGELOG.md).
 

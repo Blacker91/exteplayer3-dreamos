@@ -1,0 +1,23 @@
+diff --git a/container/container_ffmpeg.c b/container/container_ffmpeg.c
+index bbf6497..743a366 100755
+--- a/container/container_ffmpeg.c
++++ b/container/container_ffmpeg.c
+@@ -3467,6 +3467,18 @@ static void FFMPEGThread(Context_t *context)
+                                       " offset90=%"PRId64"\n",
+                                       ptsClock.track[0].raw, ptsClock.base,
+                                       ptsClock.track[0].offset);
++                    if (pts == INVALID_PTS_VALUE && first_packet && stream &&
++                        (packet.flags & AV_PKT_FLAG_KEY) && packet.pts != AV_NOPTS_VALUE &&
++                        av_rescale_q(packet.pts, stream->time_base, (AVRational){1, 90000}) >= ptsClock.base - 90000)
++                    {
++                        /* The first keyframe up to 1 s before the start time of the
++                         * container (over HTTP FFmpeg can take the start time from an
++                         * audio stream: video at 0 ms, start 2 ms) starts at 0. Dropped,
++                         * the decoder got the parameter sets with the next, not
++                         * decodable frame and showed no picture until a seek. */
++                        ffmpeg_printf(10, "first video keyframe before the start time, played at 0\n");
++                        currentVideoPts = videoTrack->pts = pts = 0;
++                    }
+                     if (pts == INVALID_PTS_VALUE)
+                     {
+                         wrapped_packet_unref(&packet);
