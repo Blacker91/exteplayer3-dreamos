@@ -1,5 +1,29 @@
 # Changelog
 
+## exteplayer3 187-dreamos1
+- Based on skyjet18 exteplayer3 187 (1df1fdc) and FFmpeg 6.1-patched
+  (ca1f67f, HLS subtitle segments loaded on demand).
+- No DreamOS patches any more: graphic subtitles (PGS, DVB, XSUB) are now
+  written with the PNG encoder of FFmpeg upstream, which the static build
+  already has. The binary is plain skyjet18 source, built statically.
+- From skyjet18 (186-187), among others:
+  - live start hold (Tvheadend) is on by default on Dreambox only;
+  - DTS: lone core frames padded on all boxes except Dreambox, PTS dejitter;
+  - HLS: DEFAULT=YES audio rendition, failing segments retried, gzip
+    playlists; DASH audio switch from the playback position;
+  - closed captions of the video stream as a subtitle track;
+  - CENC keys per KID (--key), --start <seconds>, dual mono channel
+    selection, optional audio transcoding (-Z/-X/-Y/-E);
+  - raw AC-3/E-AC-3/DTS/TrueHD/AC-4/MKA/M4B/AIFF/APE files open directly;
+  - clean stop on SIGINT/SIGTERM/SIGHUP, parent death or closed command pipe;
+  - many fixes in the H.264/H.265/MPEG-2/VC-1/AAC/LPCM writers, buffering
+    and HTTP handling (stalled reads end instead of hanging).
+- Build: the argv wrapper for musl getopt() is gone (187 uses getopt_long,
+  which reorders options in musl too); dlsym() is a stub in the static
+  binary (the MIPS build crashed at startup in it). AUDIO_GET_PTS now has its real value (it was mapped to
+  VIDEO_GET_PTS, so the position of audio-only playback could not be read);
+  OpenSSL looks for CA certificates in /etc/ssl like the image.
+
 ## exteplayer3 185-dreamos2
 - skyjet18 re-released 185 (3e87bef): the player now reports version 185
   (185-dreamos1 still reported 184, so ArchivCZSK and ServiceApp showed 184).

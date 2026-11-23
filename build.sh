@@ -29,21 +29,15 @@ OPENSSL_TAG=openssl-3.5.4
 LIBXML2_TAG=v2.13.8
 FFMPEG_REPO=https://github.com/skyjet18/FFmpeg.git
 FFMPEG_BRANCH=release/6.1-patched
-FFMPEG_REV=0da0223cd1add40eabaad04e1ce609f05670a1de
+FFMPEG_REV=ca1f67f9175db4e49af62bf3d539736a727a873f
 EP3_REPO=https://github.com/skyjet18/exteplayer3.git
-EP3_REV=3e87bef42b8d233ae11d0527548308b84a6d2a2b
+EP3_REV=1df1fdc341b3a4284dc476db872b28be1282d364
 
-EP3_SRCS="main/exteplayer.c container/container.c container/container_ffmpeg.c manager/manager.c manager/audio.c
- manager/video.c manager/subtitle.c output/output_subtitle.c output/output.c output/writer/common/pes.c
- output/writer/common/misc.c output/writer/common/writer.c output/linuxdvb_buffering.c output/graphic_subtitle.c
- output/linuxdvb_mipsel.c output/writer/mipsel/writer.c output/writer/mipsel/aac.c output/writer/mipsel/ac3.c
- output/writer/mipsel/bcma.c output/writer/mipsel/mp3.c output/writer/mipsel/pcm.c output/writer/mipsel/lpcm.c
- output/writer/mipsel/dts.c output/writer/mipsel/amr.c output/writer/mipsel/h265.c output/writer/mipsel/h264.c
- output/writer/mipsel/mjpeg.c output/writer/mipsel/mpeg2.c output/writer/mipsel/mpeg4.c output/writer/mipsel/divx3.c
- output/writer/mipsel/vp.c output/writer/mipsel/wmv.c output/writer/mipsel/vc1.c playback/playback.c tools/debug.c
- tools/strbuffer.c tools/pcm_export.c external/ffmpeg/src/bitstream.c external/ffmpeg/src/latmenc.c external/ffmpeg/src/mpeg4audio.c
- external/ffmpeg/src/xiph.c external/flv2mpeg4/src/m4vencode.c external/flv2mpeg4/src/flvdecoder.c
- external/flv2mpeg4/src/dcprediction.c external/flv2mpeg4/src/flv2mpeg4.c external/plugins/src/png.c"
+# same file list as exteplayer3_git.bb upstream (globs, expanded in the source tree)
+EP3_SRCS="main/*.c tools/*.c container/container.c container/container_ffmpeg.c manager/*.c playback/*.c
+ output/output.c output/output_subtitle.c output/graphic_subtitle.c output/linuxdvb_buffering.c
+ output/writer/common/*.c external/ffmpeg/src/*.c external/flv2mpeg4/src/*.c external/plugins/src/*.c
+ output/linuxdvb_mipsel.c output/writer/mipsel/*.c"
 
 step_toolchain() {
   local zig
@@ -82,6 +76,7 @@ step_fetch() {
     git clone -q "$EP3_REPO" "$SRC/exteplayer3"
     git -c advice.detachedHead=false -C "$SRC/exteplayer3" checkout -q "$EP3_REV"
     for p in "$ROOT"/patches/*.patch; do
+      [ -e "$p" ] || continue
       patch -d "$SRC/exteplayer3" -p1 -s < "$p" || { echo "patch failed: $p" >&2; exit 1; }
     done
   fi
@@ -98,7 +93,7 @@ step_openssl() {
   env_cross; cd "$SRC/openssl"
   make distclean >/dev/null 2>&1 || true
   ./Configure $OSSL_TARGET no-shared no-asm no-tests no-docs no-apps no-module no-engine \
-      no-dso no-async no-afalgeng no-legacy --prefix="$PREFIX" --libdir=lib \
+      no-dso no-async no-afalgeng no-legacy --prefix="$PREFIX" --libdir=lib --openssldir=/etc/ssl \
       -Os -ffunction-sections -fdata-sections >/dev/null
   make -j"$JOBS" build_libs >/dev/null
   make install_dev >/dev/null
@@ -153,32 +148,29 @@ step_exteplayer3() {
   local b="$W/build-exteplayer3"; rm -rf "$b"; mkdir -p "$b"
   cat > "$b/config.h" <<'EOF'
 #define PACKAGE_NAME "exteplayer3"
-#define PACKAGE_VERSION "185-static"
-#define VERSION "185-static"
+#define PACKAGE_VERSION "187-static"
+#define VERSION "187-static"
 #define HAVE_FLV2MPEG4_CONVERTER 1
-#define EPLAYER3_PNG_ZLIB 1
 #ifndef _FILE_OFFSET_BITS
 #define _FILE_OFFSET_BITS 64
 #endif
 #define _LARGEFILE64_SOURCE 1
 #define _LARGEFILE_SOURCE 1
+/* linux/dvb/audio.h has AUDIO_GET_PTS up to Linux 4.17 only (same as upstream recipe) */
 #ifndef AUDIO_GET_PTS
-#define AUDIO_GET_PTS VIDEO_GET_PTS
+#define AUDIO_GET_PTS _IOR('o', 19, __u64)
 #endif
 EOF
-  local objs=() f o extra optstr
-  # musl getopt does not reorder argv, main() is wrapped (extra/argv_permute.c)
-  optstr=$(grep -o 'getopt(argc, argv, "[^"]*")' main/exteplayer.c | sed 's/.*"\(.*\)".*/\1/')
-  [ -n "$optstr" ] || { echo "cannot find getopt option string" >&2; return 1; }
-  $CC $CFLAGS -DEP3_OPTSTRING="\"$optstr\"" -c "$ROOT/extra/argv_permute.c" -o "$b/argv_permute.o"
-  objs+=("$b/argv_permute.o")
+  local objs=() f o
+  # main() uses getopt_long, which permutes argv in musl too (options after the URL work)
+  $CC $CFLAGS -c "$ROOT/extra/static_dlsym.c" -o "$b/static_dlsym.o"
+  objs+=("$b/static_dlsym.o")
   for f in $EP3_SRCS; do
     o="$b/$(echo "$f" | tr '/' '_' | sed 's/\.c$/.o/')"; objs+=("$o")
-    extra=""; [ "$f" = main/exteplayer.c ] && extra="-Dmain=ep3_main"
-    echo "$CC $CFLAGS $extra -DHAVE_CONFIG_H -Dff_mpeg4audio_channels=ep3_mpeg4audio_channels -include $b/config.h -I$b -Iinclude -Iexternal -Iexternal/flv2mpeg4 -I$PREFIX/include -Wall -Wno-unused-parameter -Wno-unused-but-set-variable -c $f -o $o"
+    echo "$CC $CFLAGS -DHAVE_CONFIG_H -Dff_mpeg4audio_channels=ep3_mpeg4audio_channels -include $b/config.h -I$b -Iinclude -Iexternal -Iexternal/flv2mpeg4 -I$PREFIX/include -Wall -Wno-unused-parameter -Wno-unused-but-set-variable -c $f -o $o"
   done > "$b/compile.cmds"
   xargs -P "$JOBS" -I{} sh -c '{}' < "$b/compile.cmds" 2> "$b/compile.log" || { grep -m30 -B2 -A3 error "$b/compile.log"; return 1; }
-  $CC -static -Wl,--gc-sections -Wl,--strip-all -o "$OUT/exteplayer3" "${objs[@]}" \
+  $CC -static -Wl,--gc-sections -Wl,--strip-all -Wl,--wrap=__dlsym_time64 -o "$OUT/exteplayer3" "${objs[@]}" \
       -L"$PREFIX/lib" -lavformat -lavcodec -lswresample -lswscale -lavutil -lxml2 -lssl -lcrypto -lz -lpthread -lm \
       2> "$b/link.log" || { grep -m30 -iE 'error|undefined' "$b/link.log"; return 1; }
   file "$OUT/exteplayer3"

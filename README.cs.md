@@ -39,9 +39,10 @@ Nebo stáhni z [Releases](https://github.com/Blacker91/exteplayer3-dreamos/relea
 Když ArchivCZSK nabídne stažení novějšího exteplayer3, odpověz **Ne**, jinak by tento build přepsal.
 
 ## Změny proti skyjet18
-Viz [patches](patches) a [CHANGELOG.md](CHANGELOG.md). Stručně: volby za adresou fungují
-i s musl, oddělený zvuk a klíče DRM, zvuk MP2, zvuk živých streamů, rozpad obrazu
-H.264 u TV záznamů, rozpad obrazu 4K VP9 (YouTube) na DM900.
+Žádné. Od verze 187 se binárka staví z neupravených zdrojů skyjet18 (všechny
+dřívější opravy pro DreamOS jsou převzaté upstream); liší se jen build:
+statický s musl, takže na DreamOS běží bez knihoven image.
+Viz [SOURCES.md](SOURCES.md) a [CHANGELOG.md](CHANGELOG.md).
 
 ## Kontakt
 Chyby a návrhy: [Issues](https://github.com/Blacker91/exteplayer3-dreamos/issues) nebo e-mail

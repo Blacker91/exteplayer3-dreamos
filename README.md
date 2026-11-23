@@ -39,9 +39,10 @@ Or download the `.deb` for your box from [Releases](https://github.com/Blacker91
 When ArchivCZSK offers to download a newer exteplayer3, answer **No**, it would replace this build.
 
 ## Changes against skyjet18
-See [patches](patches) and [CHANGELOG.md](CHANGELOG.md). In short: options after the URL
-work with musl, separate audio and DRM keys, MP2 sound, sound of live streams,
-H.264 picture breakup with TV recordings, 4K VP9 (YouTube) picture breakup on the DM900.
+None. Since 187 the binary is built from unmodified skyjet18 sources (all
+earlier DreamOS fixes were merged upstream); only the build is different:
+static musl, so it runs on DreamOS without the libraries of the image.
+See [SOURCES.md](SOURCES.md) and [CHANGELOG.md](CHANGELOG.md).
 
 ## Contact
 Bugs and suggestions: [Issues](https://github.com/Blacker91/exteplayer3-dreamos/issues) or e-mail
