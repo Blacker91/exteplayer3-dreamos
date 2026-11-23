@@ -1,5 +1,15 @@
 # Changelog
 
+## exteplayer3 187-dreamos3
+- DreamOS fix (patches/0002): after switching the audio track of a film the
+  sound could stutter until the next seek, reproducible with an AC-3 44.1 kHz
+  track (passed through to a soundbar/receiver) after a TrueHD track (PCM
+  48 kHz), also in 185 and in the upstream build. The seek of the switch
+  clears both decoders, the picture runs on and the audio decoder starts for
+  the new codec only afterwards, into the running clock. On Dreambox one more
+  seek to the position after the switch starts both decoders together, as a
+  manual seek did.
+
 ## exteplayer3 187-dreamos2
 - Based on skyjet18 exteplayer3 187 (1df1fdc) and FFmpeg 6.1-patched
   (ca1f67f, HLS subtitle segments loaded on demand).
